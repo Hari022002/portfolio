@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Harish T</title>
+    <title>Harish T Breifcase</title>
     <link rel="icon" href="../image/favicon.ico" type="image/png">
 
     
@@ -290,16 +290,19 @@
         // About Section Component
         const About = ({ setRefs }) => {
             const skills = [
-                { name: 'HTML5', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg' },
-                { name: 'CSS3', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg' },
+                { name: 'HTML', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg' },
+                { name: 'CSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg' },
+                { name: 'Bootstrap', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg' },
+                { name: 'TailwindCSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg' },
                 { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg' },
+                { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
+                { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
                 { name: 'PHP', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg' },
                 { name: 'Laravel', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg' },
                 { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original-wordmark.svg' },
-                { name: 'Bootstrap', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg' },
-                { name: 'TailwindCSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg' },
+                { name: 'Prisma', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg' },
                 { name: 'Figma', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg' },
-                { name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg' },
+                // { name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg' },
             ];
 
             return (
@@ -320,7 +323,7 @@
                             <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8 max-w-4xl mx-auto">
                             {skills.map(skill => (
                                     <div key={skill.name} className="flex flex-col items-center gap-2 p-4 rounded-lg hover:bg-white/10 transition-colors duration-300">
-                                        <img src={skill.icon} alt={skill.name} className="w-12 h-12" style={{ filter: ['MySQL'].includes(skill.name) ? 'invert(1)' : 'none' }} />
+                                        <img src={skill.icon} alt={skill.name} className="w-12 h-12" style={{ filter: ['MySQL', 'Prisma'].includes(skill.name) ? 'invert(1)' : 'none' }} />
                                         <span className="text-sm text-gray-400">{skill.name}</span>
                                     </div>
                                 ))}
@@ -355,13 +358,13 @@
                     liveUrl: "https://github.com/Hari022002/Hack-Elite",
                     githubUrl: "https://github.com/Hari022002/Hack-Elite"
                 },
-                {
-                    title: "Personal Portfolio",
-                    description: "The very website you are viewing now. Built using React and Tailwind CSS, designed to be clean, modern, and fully responsive.",
-                    image: "https://placehold.co/600x400/111111/FFFFFF?text=My+Portfolio",
-                    liveUrl: "#",
-                    githubUrl: "https://github.com/Hari022002/portfolio"
-                }
+                // {
+                //     title: "Personal Portfolio",
+                //     description: "The very website you are viewing now. Built using React and Tailwind CSS, designed to be clean, modern, and fully responsive.",
+                //     image: "https://placehold.co/600x400/111111/FFFFFF?text=My+Portfolio",
+                //     liveUrl: "#",
+                //     githubUrl: "https://github.com/Hari022002/portfolio"
+                // }
             ];
             
             return (
@@ -452,6 +455,39 @@
 
         // Contact Section Component
         const Contact = ({ setRefs }) => {
+            const [status, setStatus] = useState("");
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setStatus("sending");
+                const form = e.target;
+                const data = new FormData(form);
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: form.method,
+                        body: data,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        setStatus("success");
+                        form.reset();
+                    } else {
+                        const responseData = await response.json();
+                        if (responseData.errors) {
+                             setStatus(responseData.errors.map(error => error.message).join(", "));
+                        } else {
+                            setStatus("Oops! There was a problem submitting your form");
+                        }
+                    }
+                } catch (error) {
+                    setStatus("Oops! There was a problem submitting your form");
+                }
+            };
+
             return (
                 <section id="contact" ref={el => setRefs(el)} className="py-20 reveal">
                     <div className="container mx-auto px-6">
@@ -468,21 +504,23 @@
                                 <a href="https://github.com/Hari022002" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition duration-300"><GithubIcon /></a>
                                 <a href="https://linkedin.com/in/harish-t-92064b235" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition duration-300"><LinkedinIcon /></a>
                             </div>
-                            <form action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" className="space-y-6">
+                            <form action="https://formspree.io/f/movkwlrd" method="POST" onSubmit={handleSubmit} className="space-y-6">
                                 <div>
-                                    <input type="text" name="name" placeholder="Your Name" className="w-full bg-gray-800/50 text-white border-2 border-gray-700 rounded-md py-3 px-4 focus:outline-none focus:border-gray-500 transition-colors" />
+                                    <input type="text" name="name" placeholder="Your Name" required className="w-full bg-gray-800/50 text-white border-2 border-gray-700 rounded-md py-3 px-4 focus:outline-none focus:border-gray-500 transition-colors" />
                                 </div>
                                 <div>
-                                    <input type="email" name="email" placeholder="Your Email" className="w-full bg-gray-800/50 text-white border-2 border-gray-700 rounded-md py-3 px-4 focus:outline-none focus:border-gray-500 transition-colors" />
+                                    <input type="email" name="email" placeholder="Your Email" required className="w-full bg-gray-800/50 text-white border-2 border-gray-700 rounded-md py-3 px-4 focus:outline-none focus:border-gray-500 transition-colors" />
                                 </div>
                                 <div>
-                                    <textarea name="message" placeholder="Your Message" rows="5" className="w-full bg-gray-800/50 text-white border-2 border-gray-700 rounded-md py-3 px-4 focus:outline-none focus:border-gray-500 transition-colors"></textarea>
+                                    <textarea name="message" placeholder="Your Message" rows="5" required className="w-full bg-gray-800/50 text-white border-2 border-gray-700 rounded-md py-3 px-4 focus:outline-none focus:border-gray-500 transition-colors"></textarea>
                                 </div>
                                 <div className="text-center">
-                                    <button type="submit" className="bg-gradient-custom font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
-                                        Send Message
+                                    <button type="submit" disabled={status === "sending"} className="bg-gradient-custom font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                                        {status === "sending" ? "Sending..." : "Send Message"}
                                     </button>
                                 </div>
+                                {status === "success" && <p className="text-center text-green-400 mt-4">Thank you for your message!</p>}
+                                {status && status !== "sending" && status !== "success" && <p className="text-center text-red-400 mt-4">{status}</p>}
                             </form>
                         </div>
                     </div>
@@ -542,7 +580,5 @@
     </script>
 </body>
 </html>
-
-
 
 
